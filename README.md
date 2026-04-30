@@ -1,89 +1,150 @@
-# Putra Beats Music Player (Linux / Debian)
+# Putra Beats (Linux Version)
 
-A Discord music bot tuned for **Linux deployment**, especially **Debian / Ubuntu VPS servers**.
+<p align="center">
+  <img src="https://adamputra-bucket-demo.s3.ap-southeast-1.amazonaws.com/putrabeats.png" alt="Putra Beats Logo" />
+</p>
 
-> Windows setup is usually easier. On Linux, YouTube playback is stricter because of cookies, PO tokens, ffmpeg behavior, and yt-dlp extraction differences. This README documents the **working Linux path**.
+<p align="center">
+  <b>Premium Music for Discord</b><br/>
+  Smooth playback, smart search, rich controls, filters, and a clean interactive player — optimized for Linux deployment.
+</p>
+
+<p align="center">
+  <img alt="Node.js" src="https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&logoColor=white">
+  <img alt="discord.js" src="https://img.shields.io/badge/discord.js-v14-5865F2?logo=discord&logoColor=white">
+  <img alt="Platform" src="https://img.shields.io/badge/platform-Linux%20%2F%20Debian-black">
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg">
+  <img alt="Status" src="https://img.shields.io/badge/status-active-success">
+</p>
+
+---
+
+## Overview
+
+**Putra Beats** is a premium Discord music bot built for modern server playback.
+
+This Linux version keeps the same premium experience as the Windows build, while using a Linux-safe playback architecture for YouTube extraction, cookies, PO tokens, and ffmpeg handling.
+
+It combines:
+- fast music playback
+- interactive player controls
+- `/playsearch` with dropdown selection
+- audio filters
+- queue persistence
+- polished embeds and branding
+- Linux-ready deployment for Debian / Ubuntu VPS servers
+
+The goal is simple: make a music bot that feels smooth, premium, and enjoyable to use — even on Linux where setup is stricter than Windows.
 
 ---
 
 ## Features
 
-* `/play <query>` for songs, URLs, and playlists
-* `/playsearch <query>` with dropdown search results
-* Queue system with persistence to disk
-* Pause, resume, skip, stop, queue view
-* Filter effects:
+### Core playback
+- Play songs from YouTube URLs
+- Play playlists
+- Play direct search queries
+- Queue support
+- Skip, pause, resume, and stop
 
-  * Bass Boost
-  * Nightcore
-  * Slow + Reverb
-  * Slow
-* Button controls in Discord embeds
-* Linux-safe streaming pipeline:
+### Smart search flow
+- `/playsearch` slash command
+- autocomplete while typing
+- dropdown selection menu for search results
+- cleaner experience than guessing the first result
 
-  * `yt-dlp` handles YouTube extraction and download
-  * `ffmpeg` transcodes to Discord-friendly audio
-  * bot streams to voice channel
+### Rich player UI
+- premium embedded “Now Playing” card
+- song thumbnail
+- duration display
+- selected audio format display
+- requester display
+- queue preview
 
----
+### Interactive controls
+- Pause / Resume
+- Back 10 seconds
+- Skip 10 seconds
+- Next track
+- Stop playback
+- Queue button
+- DM current song title
 
-## Why Linux needs a special setup
+### Audio filters
+- None
+- Bass Boost
+- Nightcore
+- Slow + Reverb
+- Slow
 
-On Windows, playback often works with less setup.
-
-On Linux, YouTube may block playback unless you have:
-
-* a valid **cookies.txt** file
-* `yt-dlp` configured with the correct **client**
-* a **PO token provider** for current YouTube restrictions
-* **system ffmpeg** instead of some bundled static builds
-* a streaming pipeline where **yt-dlp fetches media** and pipes it into ffmpeg
-
-This project uses the working Linux approach.
-
----
-
-## Requirements
-
-### System
-
-* Debian 12 / 13 or Ubuntu server
-* Node.js **20+**
-* ffmpeg installed from the OS package manager
-* internet access to YouTube
-
-### Node packages
-
-Make sure your project has these dependencies installed:
-
-* `discord.js`
-* `@discordjs/voice`
-* `yt-dlp-exec`
-* `ffmpeg-static` is **not required** for Linux in the final working setup
+### Linux stability improvements
+- queue persistence via `queue.json`
+- Linux-safe `yt-dlp -> ffmpeg -> Discord` streaming pipeline
+- cookies.txt support for YouTube authentication
+- PO token provider support for YouTube playback
+- system ffmpeg support on Debian / Ubuntu
+- alternative song fallback when a source becomes unavailable
+- interaction error handling
+- voice reconnect behavior
 
 ---
 
-## Recommended Linux architecture
+## Commands
 
-This is the flow used by the Linux version:
+### Music
+- `/play <query>` — Play a song, playlist, or exact query
+- `/playsearch <query>` — Search results and choose one from a dropdown
+- `/queue` — Show the current queue
 
-```text
-yt-dlp -> stdout -> ffmpeg -> Discord voice connection
+### Playback
+- `/pause` — Pause the current song
+- `/resume` — Resume playback
+- `/skip` — Skip the current song
+- `/stop` — Stop playback and clear the queue
+
+### Audio
+- `/filter <type> <restart_song>` — Apply an audio filter
+- `/help` — Open the Putra Beats command center
+
+---
+
+## Player Buttons
+
+The embedded player includes interactive controls:
+
+- **Pause / Resume** — Toggle playback
+- **Back 10s** — Rewind 10 seconds
+- **Skip 10s** — Jump forward 10 seconds
+- **Next** — Skip to the next track
+- **Stop** — Stop playback
+- **Queue** — Show current queue
+- **DM Song** — Send the current song title to your DM
+
+---
+
+## Tech Stack
+
+- [Node.js](https://nodejs.org/)
+- [discord.js v14](https://discord.js.org/)
+- [@discordjs/voice](https://www.npmjs.com/package/@discordjs/voice)
+- [yt-dlp-exec](https://www.npmjs.com/package/yt-dlp-exec)
+- [ffmpeg](https://ffmpeg.org/)
+- [bgutil-ytdlp-pot-provider](https://github.com/Brainicism/bgutil-ytdlp-pot-provider)
+
+---
+
+## Installation
+
+### 1. Clone the project
+
+```bash
+git clone https://github.com/adamdev-id/Putra-Beats-Music-Player.git
+cd Putra-Beats-Music-Player
 ```
 
-This is important.
+### 2. Install Linux dependencies
 
-Do **not** rely on:
-
-```text
-yt-dlp extracts URL -> ffmpeg fetches YouTube URL directly
-```
-
-That direct-fetch approach can fail on Linux with **403 Forbidden** even when yt-dlp itself works.
-
----
-
-## Install system packages
+For Debian / Ubuntu:
 
 ```bash
 sudo apt update
@@ -103,96 +164,43 @@ Expected path:
 /usr/bin/ffmpeg
 ```
 
----
-
-## Install Node.js
-
-Use Node.js **20+**.
-
-Check version:
-
-```bash
-node -v
-npm -v
-```
-
----
-
-## Install project dependencies
-
-From your project folder:
+### 3. Install Node dependencies
 
 ```bash
 npm install
 ```
 
-If you use `yt-dlp-exec`, verify the binary exists:
+### 4. Create `config.json`
+
+Create a `config.json` file in the project root:
+
+```json
+{
+  "token": "YOUR_BOT_TOKEN",
+  "clientId": "YOUR_APPLICATION_CLIENT_ID",
+  "guildId": "YOUR_TEST_GUILD_ID"
+}
+```
+
+### 5. Create YouTube cookies folder
 
 ```bash
-ls -la node_modules/yt-dlp-exec/bin
+mkdir -p /opt/Putra-Beats-Music-Player/secrets
 ```
 
----
+Export your YouTube cookies to:
 
-## Cookies setup (required)
-
-Linux playback may fail with messages like:
-
-* `Sign in to confirm you're not a bot`
-* `LOGIN_REQUIRED`
-* `403 Forbidden`
-
-To fix this, export a fresh `cookies.txt` file from a logged-in YouTube browser session.
-
-### Best practice
-
-1. Open a fresh **Incognito / Private** browser window
-2. Sign in to **YouTube** with your Google account
-3. Open:
-
-```text
-https://www.youtube.com/robots.txt
-```
-
-4. Export cookies using a browser extension such as:
-
-   * **Get cookies.txt LOCALLY**
-   * **cookies.txt** (Firefox)
-5. Save as:
-
-```text
-youtube-cookies.txt
-```
-
-6. Upload it to the server:
-
-```bash
+```txt
 /opt/Putra-Beats-Music-Player/secrets/youtube-cookies.txt
 ```
 
-7. Lock permissions:
+Then lock permissions:
 
 ```bash
 chmod 600 /opt/Putra-Beats-Music-Player/secrets/youtube-cookies.txt
 ```
 
-### Important notes
-
-* Do **not** commit this file to GitHub
-* Re-export cookies if playback stops working later
-* Cookies can expire or become invalid
-
----
-
-## PO Token provider setup (recommended)
-
-Modern YouTube playback on Linux may require a **PO token provider**.
-
-This project uses:
-
-* `bgutil-ytdlp-pot-provider`
-
-### Plugin install
+### 6. Install PO token provider plugin
 
 ```bash
 mkdir -p ~/.config/yt-dlp/plugins
@@ -202,7 +210,7 @@ curl -L -o bgutil-ytdlp-pot-provider.zip \
 cp bgutil-ytdlp-pot-provider.zip ~/.config/yt-dlp/plugins/
 ```
 
-### Provider server install
+### 7. Install and run bgutil provider server
 
 ```bash
 cd ~
@@ -213,18 +221,77 @@ npx tsc
 nohup node build/main.js > ~/bgutil-provider.log 2>&1 &
 ```
 
-Check it:
+Optional check:
 
 ```bash
 ps aux | grep build/main.js
 tail -n 50 ~/bgutil-provider.log
 ```
 
+### 8. Deploy slash commands
+
+```bash
+node deploy-commands.js
+```
+
+### 9. Start the bot
+
+```bash
+export YTDLP_COOKIES_FILE=/opt/Putra-Beats-Music-Player/secrets/youtube-cookies.txt
+export YTDLP_EXTRACTOR_ARGS=youtube:player_client=mweb
+export FFMPEG_PATH=/usr/bin/ffmpeg
+unset YTDLP_USER_AGENT
+node index.js
+```
+
 ---
 
-## Environment variables
+## Linux Setup Notes
 
-Use these when starting the bot on Linux:
+If you are deploying on Debian / Ubuntu:
+
+1. Install Node.js 20+
+2. Install ffmpeg from apt
+3. Run `npm install`
+4. Export a valid `cookies.txt` from a signed-in YouTube session
+5. Install the PO token plugin and provider server
+6. Deploy commands with `node deploy-commands.js`
+7. Start the bot with the Linux environment variables shown above
+
+Windows is usually easier because YouTube playback tends to be less strict in local testing.
+
+Linux is more sensitive because playback depends on:
+- valid YouTube cookies
+- extractor client selection
+- PO tokens
+- system ffmpeg behavior
+- piping yt-dlp into ffmpeg instead of letting ffmpeg fetch YouTube URLs directly
+
+---
+
+## Server Deployment Notes
+
+For a private VPS or Linux server:
+
+- install Node.js 20+
+- install ffmpeg with apt
+- install dependencies with `npm install`
+- keep the project running with **pm2**, **systemd**, or Docker
+- redeploy commands after changing slash command definitions
+- make sure outbound network access is allowed for Discord and YouTube-related requests
+- keep your `youtube-cookies.txt` file private and refreshed when needed
+
+Example using PM2:
+
+```bash
+npm install -g pm2
+pm2 start index.js --name putra-beats \
+  --update-env
+pm2 save
+pm2 startup
+```
+
+Example environment before PM2 start:
 
 ```bash
 export YTDLP_COOKIES_FILE=/opt/Putra-Beats-Music-Player/secrets/youtube-cookies.txt
@@ -233,296 +300,173 @@ export FFMPEG_PATH=/usr/bin/ffmpeg
 unset YTDLP_USER_AGENT
 ```
 
-### Why `unset YTDLP_USER_AGENT`?
+---
 
-In testing, adding a custom user agent caused mismatches between working manual yt-dlp commands and bot playback behavior.
+## `/playsearch` Flow
+
+`/playsearch` gives Putra Beats a more premium music selection flow:
+
+1. User types `/playsearch`
+2. Discord autocomplete suggests search text matches while typing
+3. Bot returns a dropdown menu with top results
+4. User selects the desired song
+5. Bot queues or plays the chosen track
+
+This is the closest Discord-native experience to a search combobox.
 
 ---
 
-## Start the bot
+## Configuration Notes
+
+### `config.json`
+
+| Key | Description |
+|---|---|
+| `token` | Discord bot token |
+| `clientId` | Discord application client ID |
+| `guildId` | Test server ID for guild command deployment |
+
+### Queue persistence
+
+The bot stores queue state in:
+
+```txt
+queue.json
+```
+
+This allows the bot to restore queued songs after a restart in supported scenarios.
+
+### Linux environment variables
+
+| Variable | Description |
+|---|---|
+| `YTDLP_COOKIES_FILE` | Path to exported YouTube cookies |
+| `YTDLP_EXTRACTOR_ARGS` | Recommended: `youtube:player_client=mweb` |
+| `FFMPEG_PATH` | Recommended: `/usr/bin/ffmpeg` |
+| `YTDLP_USER_AGENT` | Leave unset unless you know you need it |
+
+---
+
+## Troubleshooting
+
+### Commands do not appear
+Re-run:
 
 ```bash
-node index.js
+node deploy-commands.js
 ```
 
-Expected startup log:
+Then restart the bot.
 
-```text
-✅ Ready: Putra Beats#5511
-Using cookies file: /opt/Putra-Beats-Music-Player/secrets/youtube-cookies.txt
-Using extractor args: youtube:player_client=mweb
-ffmpeg path: /usr/bin/ffmpeg
+### Bot joins but no music plays
+Check:
+- bot has permission to connect and speak
+- `ffmpeg` is installed and available at `/usr/bin/ffmpeg`
+- current source is playable
+- cookies file is valid
+- PO token provider is running
+
+### `Unknown interaction`
+This usually means the bot responded too late to a slash command, select menu, or button interaction. Use deferred replies or deferred updates for actions that take time.
+
+### `Sign in to confirm you're not a bot`
+This usually means your YouTube cookies are invalid, expired, or exported incorrectly.
+
+Fix:
+- sign in to YouTube in a fresh private/incognito browser window
+- export a fresh `cookies.txt`
+- replace the old file on the server
+
+### `LOGIN_REQUIRED`
+This usually means the current cookies are not being accepted by YouTube.
+
+Fix:
+- refresh cookies
+- confirm the bot is using the correct cookie file path
+- keep `youtube:player_client=mweb`
+
+### `403 Forbidden`
+This can happen if ffmpeg tries to fetch YouTube media directly.
+
+The Linux version avoids this by using:
+
+```txt
+yt-dlp -> ffmpeg -> Discord
 ```
 
----
+### `No supported JavaScript runtime could be found`
+Make sure Node.js 20+ is installed and the bot uses:
 
-## Recommended Linux test command
-
-Before running the bot, test yt-dlp manually:
-
-```bash
-/opt/Putra-Beats-Music-Player/node_modules/yt-dlp-exec/bin/yt-dlp \
-  -v \
-  --js-runtimes node \
-  --cookies /opt/Putra-Beats-Music-Player/secrets/youtube-cookies.txt \
-  --extractor-args "youtube:player_client=mweb" \
-  "https://www.youtube.com/watch?v=1ekZEVeXwek"
-```
-
-If this fails, the bot will fail too.
-
----
-
-## Linux-specific implementation notes
-
-### 1. Use system ffmpeg
-
-Use:
-
-```js
-const ffmpegPath = process.env.FFMPEG_PATH || 'ffmpeg';
-```
-
-Avoid relying on `ffmpeg-static` for Linux production.
-
-### 2. Use yt-dlp as the network client
-
-Linux was more reliable when:
-
-* `yt-dlp` downloaded/streamed audio itself
-* ffmpeg read from `pipe:0`
-
-Instead of letting ffmpeg fetch Googlevideo URLs directly.
-
-### 3. Use `mweb` extractor client
-
-The Linux version is configured with:
-
-```text
-youtube:player_client=mweb
-```
-
-### 4. Use Node as JS runtime
-
-The working Linux configuration includes:
-
-```js
+```txt
 jsRuntimes: 'node'
 ```
 
----
+### `Requested format is not available`
+This can happen on certain YouTube videos depending on extraction path, cookies, PO tokens, or available formats.
 
-## Common Linux problems and fixes
+The bot includes fallback logic and Linux-safe streaming behavior, but some videos may still require refreshed cookies or a working PO token provider.
 
-### Problem: `--no-no-warnings`
-
-Cause:
-
-* passing `noWarnings: false` into `yt-dlp-exec`
-
-Fix:
-
-* do not set `noWarnings: false`
-* omit the option entirely unless you want `true`
+### Bot cannot DM the current song
+The user may have DMs disabled for the server.
 
 ---
 
-### Problem: `No supported JavaScript runtime could be found`
+## Branding
 
-Fix:
+### App description
 
-* install Node 20+
-* use:
+**Putra Beats is a premium Discord music bot built for smooth playback, smart search, rich controls, audio filters, and a clean modern player experience.**
 
-```js
-jsRuntimes: 'node'
-```
+### Short description
 
----
+**Premium Discord music bot with smart search, rich controls, filters, and a sleek interactive player.**
 
-### Problem: `Sign in to confirm you're not a bot`
+### Help title
 
-Fix:
-
-* export a fresh working `cookies.txt`
-* verify the cookie file path is correct
-* use the logged-in YouTube account cookies
+**Putra Beats • Command Center**
 
 ---
 
-### Problem: `LOGIN_REQUIRED`
+## Project Structure
 
-Fix:
-
-* same as above: refresh cookies
-* ensure the bot reads the correct cookie file
-* keep `player_client=mweb`
-
----
-
-### Problem: `HTTP 403 Forbidden` from ffmpeg
-
-Cause:
-
-* ffmpeg tried to fetch Googlevideo URLs directly
-
-Fix:
-
-* use `yt-dlp -> stdout -> ffmpeg -> Discord`
-
----
-
-### Problem: `SIGSEGV` from ffmpeg-static
-
-Fix:
-
-* switch to system ffmpeg:
-
-```bash
-/usr/bin/ffmpeg
-```
-
----
-
-### Problem: `Option reconnect not found`
-
-Cause:
-
-* passing `-reconnect` options while ffmpeg input is `pipe:0`
-
-Fix:
-
-* remove reconnect flags when using piped input
-
----
-
-### Problem: `write EPIPE`
-
-Cause:
-
-* ffmpeg exited early and yt-dlp kept writing into the closed pipe
-
-Fix:
-
-* handle pipe shutdown cleanly
-* ignore expected `EPIPE` on ffmpeg stdin
-
----
-
-## Security notes
-
-* Never commit `youtube-cookies.txt`
-* Keep it outside your repo if possible
-* Restrict permissions:
-
-```bash
-chmod 600 /opt/Putra-Beats-Music-Player/secrets/youtube-cookies.txt
-```
-
-* Consider using a dedicated YouTube account for automation
-
----
-
-## Suggested project layout
-
-```text
-/opt/Putra-Beats-Music-Player
-├── index.js
+```txt
+.
 ├── config.json
-├── queue.json
+├── deploy-commands.js
+├── index.js
 ├── package.json
-├── node_modules/
+├── queue.json
+├── README.md
 └── secrets/
     └── youtube-cookies.txt
 ```
 
 ---
 
-## Example run script
+## Recommended Improvements
 
-Create `run.sh`:
+Ideas for future Linux upgrades:
 
-```bash
-#!/usr/bin/env bash
-export YTDLP_COOKIES_FILE=/opt/Putra-Beats-Music-Player/secrets/youtube-cookies.txt
-export YTDLP_EXTRACTOR_ARGS=youtube:player_client=mweb
-export FFMPEG_PATH=/usr/bin/ffmpeg
-unset YTDLP_USER_AGENT
-cd /opt/Putra-Beats-Music-Player
-node index.js
-```
-
-Make executable:
-
-```bash
-chmod +x run.sh
-```
-
-Run:
-
-```bash
-./run.sh
-```
+- loop song / loop queue
+- shuffle queue
+- lyrics command
+- volume control
+- remove selected track from queue
+- queue pagination
+- now playing progress bar
+- Spotify / SoundCloud support
+- temp current / temp next audio caching for smoother Linux skip behavior
+- dashboard / web panel
+- automatic cookie health checks
+- systemd deployment template
 
 ---
 
-## Optional: systemd service
-
-Example `/etc/systemd/system/putra-beats.service`:
-
-```ini
-[Unit]
-Description=Putra Beats Music Player
-After=network.target
-
-[Service]
-Type=simple
-User=admin
-WorkingDirectory=/opt/Putra-Beats-Music-Player
-Environment=YTDLP_COOKIES_FILE=/opt/Putra-Beats-Music-Player/secrets/youtube-cookies.txt
-Environment=YTDLP_EXTRACTOR_ARGS=youtube:player_client=mweb
-Environment=FFMPEG_PATH=/usr/bin/ffmpeg
-ExecStart=/usr/bin/node /opt/Putra-Beats-Music-Player/index.js
-Restart=always
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Enable it:
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable putra-beats
-sudo systemctl start putra-beats
-sudo systemctl status putra-beats
-```
-
----
-
-## Final notes
-
-If Windows feels easier, that is normal.
-
-Linux is more sensitive because YouTube playback depends on:
-
-* cookies
-* extractor client selection
-* PO tokens
-* ffmpeg behavior
-* how media is fetched and piped
-
-Once those are configured correctly, Linux becomes stable and production-friendly.
+## License
+This project is licensed under the MIT License.
 
 ---
 
 ## Credits
 
-Built with:
-
-* Discord.js
-* @discordjs/voice
-* yt-dlp
-* ffmpeg
-* bgutil-ytdlp-pot-provider
+Built with ❤️ by **Firdaus Adam Friska Putra**.
